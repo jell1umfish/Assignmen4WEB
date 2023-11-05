@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .grid {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    div {
+      padding: 10px;
+      font-family: Arial;
+      font-size: 15pt;
+    }
+    table, th, td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+      font-family: Arial;
+      font-size: 25pt;
+    }
+  </style>
+  <script type="text/javascript">
+    // Grid Size
+    var _gridHeight = 4;
+    var _gridWidth = 4;
+    // Array to Store Tiles
+    var _tiles = new Array(_gridHeight);
+    for (var i=0; i<_gridHeight; i++) {
+      _tiles[i] = new Array(_gridWidth);
+    }
+    // Space Location
+    var _spaceLocArray = [(_gridHeight-1), (_gridWidth-1)];
+    // Click Count
+    var _clickCount = 0;
+    // Successful Flag
+    var _success = false;
+    function generateGrid() {
+      var divGrid = document.getElementById("grid");
+      var strGrid = "";
+      strGrid += "<table id='board'>";
+      for (var h=0; h<_gridHeight; h++) {
+        strGrid += "<tr>";
+        for (var w=0; w<_gridWidth; w++) {
+          var locId = "loc_" + h + "_" + w;
+          _tiles[h][w] = (h*_gridWidth+w+1);
+          // The Last Tile is Empty
+          if (w == _gridHeight-1 && h == _gridWidth-1) _tiles[h][w] = "";
+          strGrid +=
+            "<td id='"+locId+"' " +
+            "onclick='moveTile(["+h+","+w+"], true);refresh();'>" +
+            _tiles[h][w] +
+            "</td>";
+        }
+        strGrid += "</tr>";
+      }
+      strGrid += "</table>"
+      strGrid += "<div>Moves: <div id='moves'></div></div>";
+      divGrid.innerHTML = strGrid;
+    }
+    // Shuffle Tiles when Start
+    function shuffle() {
+      // Shuffle Times
+      var shuffleTimes = 100;
+      // Tile to be Moved
+      var moveTileArray = new Array(2);
+      // Moving Direction from the Space
+      var moveDirection;
+      for (var i=0; i<shuffleTimes; i++) {
+        // Find a Moving Direction
+        do {
+          moveTileArray[0] = _spaceLocArray[0];
+          moveTileArray[1] = _spaceLocArray[1];
+          moveDirection = Math.floor(Math.random() * 4);
+          switch (moveDirection) {
+            case 0:
+              moveTileArray[0]--;
+              break;
+            case 1:
+              moveTileArray[1]++;
+              break;
+            case 2:
+              moveTileArray[0]++;
+              break;
+            case 3:
+              moveTileArray[1]--;
+              break;
+          }
+        } while (moveTileArray[0]<0 || moveTileArray[0]>=_gridHeight ||
+        moveTileArray[1]<0 || moveTileArray[1]>=_gridWidth)
+        moveTile(moveTileArray, false);
+      }
+      refresh();
+    }
+    // Move Tile - Update the Tile Array & Space Array
+    function moveTile(moveTileArray, updateClickCount) {
+      if ((_spaceLocArray[0] == moveTileArray[0] &&
+          Math.abs(_spaceLocArray[1]-moveTileArray[1])==1)
+        ||
+        (_spaceLocArray[1] == moveTileArray[1] &&
+          Math.abs(_spaceLocArray[0]-moveTileArray[0])==1)
+      ) {
+        // Move Tile to Space
+        _tiles[_spaceLocArray[0]][_spaceLocArray[1]] = _tiles[moveTileArray[0]][ moveTileArray[1]];
+        // Move Space to New Location
+        _tiles[moveTileArray[0]][moveTileArray[1]] = "";
+        // Set the Space
+        _spaceLocArray[0] = moveTileArray[0];
+        _spaceLocArray[1] = moveTileArray[1];
+
+        if (updateClickCount) _clickCount++;
+        document.getElementById("moves").innerHTML = _clickCount;
+      }
+    }
+    // Refresh Display & Check Successful
+    function refresh() {
+      var checkSuccess = 0;
+      for (var h=0; h<_gridHeight; h++) {
+        for (var w=0; w<_gridWidth; w++) {
+          var locId = "loc_" + h + "_" + w;
+          var cell = document.getElementById(locId);
+          cell.innerHTML = _tiles[h][w];
+          if (_tiles[h][w] == (h*_gridWidth+w+1)) checkSuccess++;
+        }
+      }
+      // Check Success
+      if (checkSuccess >= (_gridHeight*_gridWidth-1))
+        alert("You finished in " + _clickCount + " moves!");
+    }
+  </script>
+</head>
+<body onload="generateGrid();shuffle();">
+<div id="grid" class="grid"></div>
+</body>
+</html>
