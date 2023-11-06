@@ -1,32 +1,25 @@
-const items = document.querySelectorAll('.item');
-const dropzones = document.querySelectorAll('.dropzone');
+// Add the draggable attribute to all the items.
+const draggableItems = document.querySelectorAll('.draggable');
+draggableItems.forEach((item) => {
+  item.setAttribute('draggable', true);
+});
 
-for (const item of items) {
+// Add the drop event listener to all the drop zones.
+const dropZones = document.querySelectorAll('.drop-zone');
+dropZones.forEach((dropZone) => {
+  dropZone.addEventListener('drop', (event) => {
+    // Get the dragged item.
+    const draggedItem = event.dataTransfer.getData('text/plain');
+
+    // Append the dragged item to the drop zone.
+    dropZone.appendChild(document.getElementById(draggedItem));
+  });
+});
+
+// Add the dragstart event listener to all the draggable items.
+draggableItems.forEach((item) => {
   item.addEventListener('dragstart', (event) => {
-    event.dataTransfer.setData('item', item.textContent);
+    // Set the dataTransfer object with the dragged item's ID.
+    event.dataTransfer.setData('text/plain', item.id);
   });
-}
-
-for (const dropzone of dropzones) {
-  dropzone.addEventListener('dragover', (event) => {
-    event.preventDefault();
-  });
-
-  dropzone.addEventListener('drop', (event) => {
-    event.preventDefault();
-
-    const item = event.dataTransfer.getData('item');
-    const itemElement = document.getAttribute('alt').createElement('div');
-    itemElement.textContent = item;
-
-    if (dropzone.getAttribute('data-order') === item) {
-      dropzone.classList.add('correct');
-      dropzone.appendChild(itemElement);
-    } else {
-      dropzone.classList.add('incorrect');
-      setTimeout(() => {
-        dropzone.classList.remove('incorrect');
-      }, 200);
-    }
-  });
-}
+});
