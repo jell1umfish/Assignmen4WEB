@@ -162,9 +162,11 @@ Game.Draw = function(context, snake) {
     // Logic of Snake food
     if (nx == snake.stage.food.x && ny == snake.stage.food.y) {
       var tail = {x: nx, y: ny};
+      var a = new Audio('mp3/kidcheer.mp3');
       snake.stage.score++;
       snake.initFood();
-      if(snake.stage.score ===10){
+      if(snake.stage.score ===1){
+        a.play();
         alert("YOU WON!");
         window.location.replace('index.html');
       }

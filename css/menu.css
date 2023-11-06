@@ -1,0 +1,156 @@
+.jpeg {
+  width: 80%;
+  height: auto;
+  --g: 4px;     /* the gap */
+  --b: 12px;    /* border thickness*/
+  --c: #669706; /* the color */
+  padding: calc(var(--g) + var(--b));
+  --_c: #0000 0 25%, var(--c) 0 50%;
+  --_g1: repeating-linear-gradient(90deg ,var(--_c)) repeat-x;
+  --_g2: repeating-linear-gradient(180deg,var(--_c)) repeat-y;
+  background:
+    var(--_g1) var(--_p, 25%) 0   ,var(--_g2) 0    var(--_p,125%),
+    var(--_g1) var(--_p,125%) 100%,var(--_g2) 100% var(--_p, 25%);
+  background-size: 200% var(--b),var(--b) 200%;
+  cursor: pointer;
+  filter: grayscale(50%);
+  transition: .3s;
+}
+.jpeg:hover {
+  --_p: 75%;
+  filter: grayscale(0%);
+}
+#backToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: #198653;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 20px;
+  display: none; /* Initially hide the button */
+}
+body {
+  margin: 10%;
+  min-height: 100vh;
+  gap: 30px;
+}
+#logopic{
+  width: 85%;
+  height: auto;
+}
+main {
+  font-family: sans-serif;
+  margin: 1%;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+body{
+  font-family: sans-serif;
+  margin: 1%;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+#main-holder {
+  width: 50%;
+  height: 70%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 0px 0px 5px 2px black;
+}
+
+/* -------------------------------------------------------------- */
+
+#login-header {}
+
+/* -------------------------------------------------------------- */
+
+/* Middle row of the main grid (contains the error message) */
+
+#login-error-msg-holder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Error message. By default it's transparent, but the opacity is controlled
+by JavaScript */
+
+#login-error-msg {
+  width: 23%;
+  text-align: center;
+  margin: 0;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #8a0000;
+  border: 1px solid #8a0000;
+  background-color: #e58f8f;
+  opacity: 0;
+}
+
+#error-msg-second-line {
+  display: block;
+}
+.grid{
+  display: grid;
+  place-items:center;
+}
+#main-holder{
+  width:250px;
+  height: 250px;
+}
+/* -------------------------------------------------------------- */
+
+/* Adjust the positioning of the login form inside the last row of the
+main grid */
+
+#login-form {
+  align-self: flex-start;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Style the login form fields' placeholders */
+
+.login-form-field::placeholder {
+  color: #3a3a3a;
+}
+
+/* Style the login form fields (username and password) */
+
+.login-form-field {
+  border: none;
+  border-bottom: 1px solid #3a3a3a;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  outline: none;
+  padding: 0px 0px 5px 5px;
+}
+
+/* Style the login button */
+
+#login-form-submit {
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  background-color: #3a3a3a;
+  cursor: pointer;
+  outline: none;
+}
